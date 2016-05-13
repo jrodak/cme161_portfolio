@@ -45,10 +45,11 @@ var get_data = function(init_index) {
 var all_data = get_data(0);
 
 var onClickCallback = function(d, element) {
-	document.getElementById('stock_price_start_btn').disabled = false;
+	document.getElementById('c3js_stocks_start_btn').disabled = false;
 };
 
 var my_chart_parameters = {
+  "bindto": "#c3js_stocks_chart",
   "data": {
   	"x" : 'x',
     "columns": all_data,
@@ -109,19 +110,19 @@ var my_chart_object = c3.generate(my_chart_parameters);
 // slides
 
 var slide_0 = function() {
-  document.getElementById("stock_price_message").innerHTML = "Over the last decade online retailers have become increasingly popular, but how has this affected 		other retailers that primarily operate through physical stores?";
+  document.getElementById("c3js_stocks_message").innerHTML = "Over the last decade online retailers have become increasingly popular, but how has this affected 		other retailers that primarily operate through physical stores?";
 };
 
 
 var slide_1 = function() {
-  document.getElementById("stock_price_message").innerHTML = "Here we have a comparison of the percent change in stock value of Amazon (AMZN) and Barne's and Noble (BKS) since January 2000, where each data point is determined by the closing value of the stock (adjusted for dividends and stock splits) on the first day of the month.";
+  document.getElementById("c3js_stocks_message").innerHTML = "Here we have a comparison of the percent change in stock value of Amazon (AMZN) and Barne's and Noble (BKS) since January 2000, where each data point is determined by the closing value of the stock (adjusted for dividends and stock splits) on the first day of the month.";
 };
 
 var slide_2 = function() {
 	my_chart_object.regions([{
     end: "2008-01-30"
   }]);
-	document.getElementById("stock_price_message").innerHTML = "This dramatic growth of Amazon after 2008 makes the stock prices of Barne's and Noble look much stable, so let's look at the first half of our data points up until 2008";
+	document.getElementById("c3js_stocks_message").innerHTML = "This dramatic growth of Amazon after 2008 makes the stock prices of Barne's and Noble look much stable, so let's look at the first half of our data points up until 2008";
 };
 
 var slide_3 = function() {
@@ -130,7 +131,7 @@ var slide_3 = function() {
   my_chart_object.load({
   	columns : get_data(0)
   });
-  document.getElementById("stock_price_message").innerHTML = "During this time period, Barne's and Noble stock actually increased in value a great deal. ";
+  document.getElementById("c3js_stocks_message").innerHTML = "During this time period, Barne's and Noble stock actually increased in value a great deal. ";
 };
 
 var slide_4 = function() {
@@ -141,7 +142,7 @@ var slide_4 = function() {
   my_chart_object.regions([{
     start: "2008-01-01"
   }]);
-  document.getElementById("stock_price_message").innerHTML = "Now let's look at the stock values from 2008 forward.";
+  document.getElementById("c3js_stocks_message").innerHTML = "Now let's look at the stock values from 2008 forward.";
 };
 
 var slide_5 = function() {
@@ -150,7 +151,7 @@ var slide_5 = function() {
 	my_chart_object.load({
   	columns : get_data(0)
  	});
-	document.getElementById("stock_price_message").innerHTML = "However, after 2008 the percent increase in Amazon's stock value dwarfs that of Barne's and Noble.";
+	document.getElementById("c3js_stocks_message").innerHTML = "However, after 2008 the percent increase in Amazon's stock value dwarfs that of Barne's and Noble.";
 };
 
 var slide_6 = function() {
@@ -158,8 +159,8 @@ var slide_6 = function() {
   my_chart_object.load({
   	columns : all_data
   });
-  document.getElementById('stock_price_start_btn').disabled = true;
-  document.getElementById("stock_price_message").innerHTML = "Now, select a point to see how stock prices have changed since then. Once you've picked a point, click Continue.";
+  document.getElementById('c3js_stocks_start_btn').disabled = true;
+  document.getElementById("c3js_stocks_message").innerHTML = "Now, select a point to see how stock prices have changed since then. Once you've picked a point, click Continue.";
 };
 
 var slide_7 = function() {
@@ -190,18 +191,18 @@ var run = function() {
   current_slide += 1;
 
   if (current_slide === 1) {
-    document.getElementById("stock_price_start_btn").innerHTML = "Start";
+    document.getElementById("c3js_stocks_start_btn").innerHTML = "Start";
   } else if (current_slide === slides.length) {
   	current_slide = slides.length - 2;
-    document.getElementById("stock_price_start_btn").innerHTML = "Back";
+    document.getElementById("c3js_stocks_start_btn").innerHTML = "Back";
   } else {
-    document.getElementById("stock_price_start_btn").innerHTML = "Continue";
+    document.getElementById("c3js_stocks_start_btn").innerHTML = "Continue";
   }
 };
 
 // button event handler
 
-document.getElementById('stock_price_start_btn').addEventListener("click", run);
+document.getElementById('c3js_stocks_start_btn').addEventListener("click", run);
 
 // init
 
