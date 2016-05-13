@@ -239,7 +239,7 @@ setParents(donut);
 var height = 1000,  width = 1000;
 
 var svg = d3
-  .select("#d3_donuts_hierarchy")
+  .select("#d3js_donuts_hierarchy")
   .append("svg")
   .attr("height", height)
   .attr("width", width)
