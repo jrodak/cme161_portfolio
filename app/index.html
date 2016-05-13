@@ -14,6 +14,8 @@
 		<!-- c3js_stocks -->
 		<link href="assets/css/c3js_stocks.css" rel="stylesheet">
 
+		<!-- d3_donuts -->
+
 </head>
 <body>
 	<!-- begin wrap -->		
@@ -42,6 +44,12 @@
 							The Change in Stock Prices of Amazon and Barne's & Noble
 						</h3>
 
+						<p>
+							This visualization uses c3.js to compare how the value of Amazon and Barne's & Noble stock prices have changed in the last two decades.
+						</p>
+
+						<hr>
+
 						<div class="container-fluid" style="margin-top:10px;">
 						  <div class="row">
 						    <div class="col-md-8">
@@ -56,9 +64,7 @@
 						  </div>
 						</div>
 
-						<p>
-							This visualization uses c3.js to compare how the value of Amazon and Barne's & Noble stock prices have changed in the last two decades.
-						</p>
+						
 												
 						<hr>
 
@@ -78,7 +84,10 @@
 
 						<hr>
 						
-						<canvas id="some_name"></canvas>
+						<input id="d3js_donuts_search" type="text" name="query" value="Chocolate Custard Donut">
+						<button id="d3js_donuts_button">Search</button>
+						<button id="d3js_donuts_clear">Clear</button>
+						<div id="d3js_donuts_hierarchy"></div>
 						
 						<hr>
 
