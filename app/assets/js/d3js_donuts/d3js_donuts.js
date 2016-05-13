@@ -304,7 +304,6 @@ update(donut);
 function update(source) {
 
 	var search_term = document.getElementById("d3js_donuts_search").value.split(" ");
-  console.log(search_term);
 
   var nodes = tree.nodes(donut);
   var links = tree.links(nodes);
