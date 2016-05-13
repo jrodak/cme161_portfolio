@@ -1,0 +1,10 @@
+/* Taken from Piazza post # */
+#stock_price_chart .c3-circle {
+    stroke:#000;
+    stroke-opacity:0.0;
+}
+
+#stock_price_chart .c3-selected-circle {
+    r:10;
+    fill:black;
+}
