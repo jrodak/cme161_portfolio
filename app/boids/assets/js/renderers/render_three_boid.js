@@ -192,7 +192,7 @@ Boid.prototype.draw = function(){
     $p.box(this.radius);
     $p.rotate(-this.rotation.x, -this.rotation.y, -this.rotation.z);
     $p.translate(-this.position.x, -this.position.y, -this.position.z);
-}
+};
 
 // add particles
 // var n = 500;
