@@ -1,4 +1,6 @@
 /**
+ * dependency-free version of Vector3, ported from Three.js for CME161 by Dave Deriso, 2016
+ * original authors are below
  * @author mrdoob / http://mrdoob.com/
  * @author *kile / http://kile.stravaganza.org/
  * @author philogb / http://blog.thejit.org/
@@ -7,16 +9,7 @@
  * @author WestLangley / http://github.com/WestLangley
  */
 
-var THREE = { };
-
-
-// set the default log handlers
-THREE.log = function() { console.log.apply( console, arguments ); }
-THREE.warn = function() { console.warn.apply( console, arguments ); }
-THREE.error = function() { console.error.apply( console, arguments ); }
-
-
-THREE.Vector3 = function ( x, y, z ) {
+Vector3 = function ( x, y, z ) {
 
 	this.x = x || 0;
 	this.y = y || 0;
@@ -24,9 +17,9 @@ THREE.Vector3 = function ( x, y, z ) {
 
 };
 
-THREE.Vector3.prototype = {
+Vector3.prototype = {
 
-	constructor: THREE.Vector3,
+	constructor: Vector3,
 
 	set: function ( x, y, z ) {
 
@@ -101,8 +94,7 @@ THREE.Vector3.prototype = {
 	add: function ( v, w ) {
 
 		if ( w !== undefined ) {
-
-			THREE.warn( 'THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
+			// THREE.warn( 'THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
 			return this.addVectors( v, w );
 
 		}
@@ -139,7 +131,7 @@ THREE.Vector3.prototype = {
 
 		if ( w !== undefined ) {
 
-			THREE.warn( 'THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
+			// THREE.warn( 'THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
 			return this.subVectors( v, w );
 
 		}
@@ -176,7 +168,7 @@ THREE.Vector3.prototype = {
 
 		if ( w !== undefined ) {
 
-			THREE.warn( 'THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.' );
+			// THREE.warn( 'THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.' );
 			return this.multiplyVectors( v, w );
 
 		}
@@ -215,13 +207,13 @@ THREE.Vector3.prototype = {
 
 		return function ( euler ) {
 
-			if ( euler instanceof THREE.Euler === false ) {
+			// if ( euler instanceof THREE.Euler === false ) {
 
-				THREE.error( 'THREE.Vector3: .applyEuler() now expects a Euler rotation rather than a Vector3 and order.' );
+				// THREE.error( 'THREE.Vector3: .applyEuler() now expects a Euler rotation rather than a Vector3 and order.' );
 
-			}
+			// }
 
-			if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
+			// if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
 
 			this.applyQuaternion( quaternion.setFromEuler( euler ) );
 
@@ -237,7 +229,7 @@ THREE.Vector3.prototype = {
 
 		return function ( axis, angle ) {
 
-			if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
+			// if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
 
 			this.applyQuaternion( quaternion.setFromAxisAngle( axis, angle ) );
 
@@ -330,7 +322,7 @@ THREE.Vector3.prototype = {
 
 		return function ( camera ) {
 
-			if ( matrix === undefined ) matrix = new THREE.Matrix4();
+			// if ( matrix === undefined ) matrix = new THREE.Matrix4();
 
 			matrix.multiplyMatrices( camera.projectionMatrix, matrix.getInverse( camera.matrixWorld ) );
 			return this.applyProjection( matrix );
@@ -345,7 +337,7 @@ THREE.Vector3.prototype = {
 
 		return function ( camera ) {
 
-			if ( matrix === undefined ) matrix = new THREE.Matrix4();
+			// if ( matrix === undefined ) matrix = new THREE.Matrix4();
 
 			matrix.multiplyMatrices( camera.matrixWorld, matrix.getInverse( camera.projectionMatrix ) );
 			return this.applyProjection( matrix );
@@ -499,8 +491,8 @@ THREE.Vector3.prototype = {
 
 			if ( min === undefined ) {
 
-				min = new THREE.Vector3();
-				max = new THREE.Vector3();
+				min = new Vector3();
+				max = new Vector3();
 
 			}
 
@@ -628,7 +620,7 @@ THREE.Vector3.prototype = {
 
 		if ( w !== undefined ) {
 
-			THREE.warn( 'THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead.' );
+			// THREE.warn( 'THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead.' );
 			return this.crossVectors( v, w );
 
 		}
@@ -662,7 +654,7 @@ THREE.Vector3.prototype = {
 
 		return function ( vector ) {
 
-			if ( v1 === undefined ) v1 = new THREE.Vector3();
+			// if ( v1 === undefined ) v1 = new THREE.Vector3();
 
 			v1.copy( vector ).normalize();
 
@@ -680,7 +672,7 @@ THREE.Vector3.prototype = {
 
 		return function ( planeNormal ) {
 
-			if ( v1 === undefined ) v1 = new THREE.Vector3();
+			// if ( v1 === undefined ) v1 = new THREE.Vector3();
 
 			v1.copy( this ).projectOnVector( planeNormal );
 
@@ -699,7 +691,7 @@ THREE.Vector3.prototype = {
 
 		return function ( normal ) {
 
-			if ( v1 === undefined ) v1 = new THREE.Vector3();
+			if ( v1 === undefined ) v1 = new Vector3();
 
 			return this.sub( v1.copy( normal ).multiplyScalar( 2 * this.dot( normal ) ) );
 
@@ -707,15 +699,15 @@ THREE.Vector3.prototype = {
 
 	}(),
 
-	angleTo: function ( v ) {
+	// angleTo: function ( v ) {
 
-		var theta = this.dot( v ) / ( this.length() * v.length() );
+	// 	var theta = this.dot( v ) / ( this.length() * v.length() );
 
-		// clamp, to handle numerical problems
+	// 	// clamp, to handle numerical problems
 
-		return Math.acos( THREE.Math.clamp( theta, - 1, 1 ) );
+	// 	return Math.acos( THREE.Math.clamp( theta, - 1, 1 ) );
 
-	},
+	// },
 
 	distanceTo: function ( v ) {
 
@@ -733,40 +725,40 @@ THREE.Vector3.prototype = {
 
 	},
 
-	setEulerFromRotationMatrix: function ( m, order ) {
+	// setEulerFromRotationMatrix: function ( m, order ) {
 
-		THREE.error( 'THREE.Vector3: .setEulerFromRotationMatrix() has been removed. Use Euler.setFromRotationMatrix() instead.' );
+	// 	THREE.error( 'THREE.Vector3: .setEulerFromRotationMatrix() has been removed. Use Euler.setFromRotationMatrix() instead.' );
 
-	},
+	// },
 
-	setEulerFromQuaternion: function ( q, order ) {
+	// setEulerFromQuaternion: function ( q, order ) {
 
-		THREE.error( 'THREE.Vector3: .setEulerFromQuaternion() has been removed. Use Euler.setFromQuaternion() instead.' );
+	// 	THREE.error( 'THREE.Vector3: .setEulerFromQuaternion() has been removed. Use Euler.setFromQuaternion() instead.' );
 
-	},
+	// },
 
-	getPositionFromMatrix: function ( m ) {
+	// getPositionFromMatrix: function ( m ) {
 
-		THREE.warn( 'THREE.Vector3: .getPositionFromMatrix() has been renamed to .setFromMatrixPosition().' );
+	// 	THREE.warn( 'THREE.Vector3: .getPositionFromMatrix() has been renamed to .setFromMatrixPosition().' );
 
-		return this.setFromMatrixPosition( m );
+	// 	return this.setFromMatrixPosition( m );
 
-	},
+	// },
 
-	getScaleFromMatrix: function ( m ) {
+	// getScaleFromMatrix: function ( m ) {
 
-		THREE.warn( 'THREE.Vector3: .getScaleFromMatrix() has been renamed to .setFromMatrixScale().' );
+	// 	THREE.warn( 'THREE.Vector3: .getScaleFromMatrix() has been renamed to .setFromMatrixScale().' );
 
-		return this.setFromMatrixScale( m );
-	},
+	// 	return this.setFromMatrixScale( m );
+	// },
 
-	getColumnFromMatrix: function ( index, matrix ) {
+	// getColumnFromMatrix: function ( index, matrix ) {
 
-		THREE.warn( 'THREE.Vector3: .getColumnFromMatrix() has been renamed to .setFromMatrixColumn().' );
+	// 	THREE.warn( 'THREE.Vector3: .getColumnFromMatrix() has been renamed to .setFromMatrixColumn().' );
 
-		return this.setFromMatrixColumn( index, matrix );
+	// 	return this.setFromMatrixColumn( index, matrix );
 
-	},
+	// },
 
 	setFromMatrixPosition: function ( m ) {
 
@@ -852,8 +844,9 @@ THREE.Vector3.prototype = {
 
 	clone: function () {
 
-		return new THREE.Vector3( this.x, this.y, this.z );
+		return new Vector3( this.x, this.y, this.z );
 
 	}
 
 };
+

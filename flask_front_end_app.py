@@ -13,9 +13,9 @@ def index():
 def send_assets(path):
     return send_from_directory('app/assets/', path)
 
-@app.route('/three/<path>')
-def send_assets_html(path):
-    return app.make_response(open('app/assets/html/' + path + '.html').read())
+@app.route('/boids/')
+def send_assets_html():
+    return app.make_response(open('app/assets/html/boids_threejs.html').read())
 
 
 @app.route('/trellis/', methods=['GET'])
