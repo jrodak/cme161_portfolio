@@ -1,22 +1,3 @@
-// Your job is to implement this file
-console.log(" IMPLEMENT ME! (OPEN ME, I HAVE HINTS) ");
-
-
-/*
-
-HINT 1: Copy render_three_particle.js. Rename it to render_three_boid.js. Then look for this section and implement your Prototype methods.
-That's all you need to do. The section where you implement your code looks like this:
-
-// ---------------------------------------------------------
-// Particle Render Prototype Methods
-
-*** implement your stuff here ***
-
-// ------------------------------------------------------------------------------------------------
-// Light
-
-*/
-
 // ------------------------------------------------------------------------------------------------
 // scene, camera, and renderer go here
 
@@ -130,8 +111,8 @@ Boid.prototype.create_mesh = function(){
         this.geometry,
         this.material
     );
-    this.mesh.position.set(this.postion.x, this.position.y, this.position.z);
-    console.log(this.mesh);
+    this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+    // console.log(this.mesh);
 };
 
 Boid.prototype.init_mesh_obj = function(){
@@ -143,23 +124,17 @@ Boid.prototype.init_mesh_obj = function(){
 Boid.prototype.update_mesh = function(){
     // update rotation ( rotation is a vector of type Euler http://threejs.org/docs/#Reference/Math/Euler )
     this.mesh.position.set(this.position.x, this.position.y, this.position.z);
-    this.mesh.rotation.setFromVector3(new THREE.Vector3(this.rx, this.rotation.y, this.rotation.z));
+    this.mesh.rotation.setFromVector3(new THREE.Vector3(this.rotation.x, this.rotation.y, this.rotation.z));
 
     // calculate momentum and apply it to the color
-    var momentum = Math.sqrt( Math.pow(this.x_v,2) + Math.pow(this.y_v,2) + Math.pow(this.z_v,2) ) * this.radius;
-    var intensity = momentum/200;
+    var momentum = this.velocity.length() * this.radius;
+    var intensity = momentum/150 * 360;
     if(intensity < 0) intensity = 0;
     if(intensity > 1) intensity = 1;
     this.mesh.material.color.setHSL( intensity, 0.1 + intensity * 0.85, 0.2 + intensity * 0.4);
 };
 
-Boid.prototype.set_parameters = function(){
-    // gravity is a downward force, -.1 makes the objects fly around longer
-    this.gravity = -0.1;
-};
-// 
-
- // ---------------------------------------------------------
+// ---------------------------------------------------------
 // Boid Render Prototype Methods
 
 // add properties
@@ -178,44 +153,37 @@ Boid.prototype.set_rotation = function(){
 // draw method
 Boid.prototype.draw = function(){
     // color
-    // var velocity_length = Math.sqrt( Math.pow(this.velocity.x,2) + Math.pow(this.velocity.y,2) + Math.pow(this.velocity.z,2) );
-    var momentum = this.velocity.length() * this.radius;
-    var intensity = momentum/150 * 360;
-    $p.fill(intensity, intensity, intensity, 270);
+    this.update_mesh();
 
     // rotate
     this.rotation.add(this.rotation_v);
     
     // 3D shape
-    $p.translate(this.position.x, this.position.y, this.position.z);
-    $p.rotate(this.rotation.x, this.rotation.y, this.rotation.z);
-    $p.box(this.radius);
-    $p.rotate(-this.rotation.x, -this.rotation.y, -this.rotation.z);
-    $p.translate(-this.position.x, -this.position.y, -this.position.z);
+    // $p.translate(this.position.x, this.position.y, this.position.z);
+    // $p.rotate(this.rotation.x, this.rotation.y, this.rotation.z);
+    // $p.box(this.radius);
+    // $p.rotate(-this.rotation.x, -this.rotation.y, -this.rotation.z);
+    // $p.translate(-this.position.x, -this.position.y, -this.position.z);
 };
 
 // add particles
-// var n = 500;
-
-// var data = [];
-// for (var i = 0; i < n; i++){
-//     var p = new Particle(SCENE_WIDTH, SCENE_HEIGHT);
-//     p.set_parameters();
-//     p.init_mesh_obj();
-
-//     parent.add(p.mesh);
-//     data.push(p);
-// }
 
 // add boids
-var n = 200, data = [];
+var n = 200;
+var data = [];
 for (var i = 0; i < n; i++){
-    data[i] = new Boid();
-    data[i].set_hue();
-    data[i].set_radius();
-    data[i].set_rotation();
-    data[i].setWorldSize(SCENE_WIDTH, SCENE_HEIGHT, SCENE_WIDTH * 1.5);
+    var b = new Boid();
+    b.set_hue();
+    b.set_radius();
+    b.set_rotation();
+    b.setWorldSize(SCENE_WIDTH, SCENE_HEIGHT, SCENE_WIDTH * 1.5);
+    b.init_mesh_obj();
+
+
+    parent.add(b.mesh);
+    data.push(b);
 }
+
 
 scene.add(parent);
 
@@ -306,8 +274,9 @@ function draw() {
     stats.begin();
 
     for (var i = 0; i <n; i++) {
-        data[i].update();
-        data[i].update_mesh();
+        data[i].run(data);
+        // data[i].update_mesh();
+        data[i].draw();
     }
 
     parent.rotation.x += controls.p_x_rot_v;
@@ -334,30 +303,3 @@ function render() {
 requestAnimationFrame(draw);
 
 // ------------------------------------------------------------------------------------------------
-
-
-
-/*
-
-HINT 2: Look for this section inside render_processing_boid.js for inspiration. The section where you implement your code looks like this:
-
-// ---------------------------------------------------------
-// boids
-
-*** use this part as a reference ***
-
-// ---------------------------------------------------------
-// setup
-
-*/
-
-
-
-
-/*
-
-Finally, put the boids with three js renderer in your portfolio. This completes your training in introductory data visualization!
-
-*/
-
-
