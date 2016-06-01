@@ -18,12 +18,12 @@ def send_assets_html(path):
     return app.make_response(open('app/assets/html/' + path + '.html').read())
 
 
-@app.route('/trellis', methods=['GET'])
+@app.route('/trellis/', methods=['GET'])
 def get_trellis():
     with open('app/assets/data/trellis.json') as data_file:
         return json.dumps(json.load(data_file))
 
-@app.route('/trellis/limit/', methods=['GET'])
+@app.route('/trellis/limit/<int:n_entries>/', methods=['GET'])
 def get_trellis_limit(n_entries):
     with open('app/assets/data/trellis.json') as data_file:
         return json.dumps(json.load(data_file)[:n_entries])
@@ -50,12 +50,12 @@ def make_data_graph(data_list_in):
     nodes = [{"name":n} for n in names.keys()]
     return { "nodes": nodes, "edges": edges }
 
-@app.route('/graph', methods=['GET'])
+@app.route('/graph/', methods=['GET'])
 def get_graph():
     with open('app/assets/data/trellis.json') as data_file:
         return json.dumps(make_data_graph(json.load(data_file)))
 
-@app.route('/graph/limit/', methods=['GET'])
+@app.route('/graph/limit/<int:n_entries>/', methods=['GET'])
 def get_graph_limit(n_entries):
     with open('app/assets/data/trellis.json') as data_file:
         return json.dumps(make_data_graph(json.load(data_file)[:n_entries]))
