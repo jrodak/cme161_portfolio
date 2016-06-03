@@ -1,3 +1,4 @@
+from __future__ import division
 import os, copy, json, collections
 from flask import Flask, jsonify, request, send_from_directory, make_response
 app = Flask(__name__, static_url_path='')
@@ -60,8 +61,50 @@ def get_graph_limit(n_entries):
     with open('app/assets/data/trellis.json') as data_file:
         return json.dumps(make_data_graph(json.load(data_file)[:n_entries]))
 
+# routes for data for past visualizations
+
+@app.route('/data/stocks/', methods=['GET'])
+def get_stocks_raw():
+    with open('app/assets/data/stocks.json') as data_file:
+        return json.dumps(json.load(data_file))
+
+@app.route('/data/stocks/<int:ref_index>/<int:start_index>/')
+def get_stocks_start(ref_index, start_index):
+    with open('app/assets/data/stocks.json') as data_file:
+        raw_data = json.load(data_file)
+        return convert_data(raw_data, ref_index, start_index, len(raw_data[0]))
+
+
+@app.route('/data/stocks/<int:ref_index>/<int:start_index>/<int:end_index>/')
+def get_stocks(ref_index, start_index, end_index):
+    with open('app/assets/data/stocks.json') as data_file:
+        raw_data = json.load(data_file)
+        return convert_data(raw_data, ref_index, start_index, end_index)
+        
+
+def convert_data(raw_data, ref_index, start_index, end_index):
+    converted_data = [
+        [raw_data[0][0]],
+        [raw_data[1][0]],
+        [raw_data[2][0]],
+    ]
+    converted_data[0].extend(raw_data[0][start_index + 1: end_index])
+    converted_data[1].extend(convert_to_percent_increase(raw_data[1][start_index + 1:end_index], raw_data[1][ref_index + 1]))
+    converted_data[2].extend(convert_to_percent_increase(raw_data[2][start_index + 1:end_index], raw_data[2][ref_index + 1]))
+    return json.dumps(converted_data)
+
+
+@app.route('/data/donuts/')
+def get_donuts():
+    with open('app/assets/data/donuts.json') as data_file:
+        return json.dumps(json.load(data_file))
+
+
+def convert_to_percent_increase(raw_data, ref_value):
+    return [(val / ref_value - 1) * 100 for val in raw_data]
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5050))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=True)
 # set debug=True if you want to have auto-reload on changes
 # this is great for developing
